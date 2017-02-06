@@ -71,7 +71,7 @@ function addPostData(post) {
   var titleLink = document.createElement('a');
   titleLink.setAttribute('href', url);
   titleLink.textContent = title;
-  var time = timeSince(post.time);
+  var time = timeSince(post.time * 1000);
   var linkAuthor = document.createElement('a');
   linkAuthor.setAttribute('href', 'https://news.ycombinator.com/user?id=' + author);
   linkAuthor.textContent = author;
