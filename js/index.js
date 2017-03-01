@@ -32,7 +32,7 @@ function removeAllChilds(id) {
 }
 
 function addCommentToUl(ulId, comment, emphasisTerms) {
-  if(comment.deleted) {
+  if(comment === null || comment.deleted) {
     return;
   }
   //Element creation
@@ -144,9 +144,13 @@ function strContains(str, substr) {
   return str.toLowerCase().indexOf(substr.toLowerCase()) !== -1;
 }
 
+
 // Filtering functions
 function hasAllMandatoryTerms(comment, terms) {
   var termsArr = (terms instanceof Array) ? terms.slice() : terms.slice(',');
+  if(comment === null || comment === undefined) {
+    return false; 
+  }
   var commentStr = (typeof comment === 'object') ? comment.text : comment;
   var i;
   var term;
@@ -167,12 +171,12 @@ function hasAllMandatoryTerms(comment, terms) {
 
 function hasAtLeastOneTerm(comment, terms) {
   var termsArr = (terms instanceof Array) ? terms.slice() : terms.slice(',');
+  if(comment === null || comment === undefined) {
+    return false; 
+  }
   var commentStr = (typeof comment === 'object') ? comment.text : comment;
   var i;
   var term;
-  if(commentStr === undefined) {
-    return false;
-  }
   if(termsArr.length === 0){
     return true;
   }
@@ -302,7 +306,7 @@ function importComment(commentId, id) {
       url: 'https://hacker-news.firebaseio.com/v0/item/' + commentId + '.json?print=pretty',
     }).done(function(data) {
       comments[id] = data;
-      if(data.deleted) {
+      if((data && data.deleted) || data === null) {
         deletedComments++;
       }
       addCommentToUl('comments', data);
